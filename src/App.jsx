@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react'
 // import './App.css'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
-
+import { useMemo } from "react";
 function App() {
-  const [counters, setcounters] = useState([])
+ 
+  const [allCountries, setAllCountries] = useState([])
+const [counters, setcounters] = useState([])
 
   useEffect(() => {
     axios.get('https://countries-search-data-prod-812920491762.asia-south1.run.app/countries')
       .then(response => {
-        setcounters(response.data)
+        setAllCountries(response.data)
+setcounters(response.data)
 
       })
       .catch(error => {
@@ -18,15 +21,23 @@ function App() {
   } ,[])
 
 
+const debouncedSearch = useMemo(() =>
+  debounce((value) => {
+    const searchTerm = value.toLowerCase()
 
-  const handleChange = (event) => {
-    debounce(() => {
-      const searchTerm = event.target.value.toLowerCase()
-      const filteredCounters = counters.filter(counter =>
-        counter.common.toLowerCase().includes(searchTerm)
-      )
-      setcounters(filteredCounters)
-    }, 300)
+    const filtered = allCountries.filter(country =>
+      country.common.toLowerCase().includes(searchTerm)
+    )
+
+    setcounters(filtered)
+  }, 1500)
+, [allCountries])
+
+
+
+
+  const handleChange = (e) => {
+    debouncedSearch(e.target.value)
   }
   return (
     <>
@@ -40,5 +51,8 @@ function App() {
     </>
   )
 }
+
+
+
 
 export default App
