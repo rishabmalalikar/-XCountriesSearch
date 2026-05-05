@@ -47,19 +47,18 @@ const debouncedSearch = useMemo(() =>
   };
 }, [debouncedSearch]);
   return (
-    <div 
-  key={index} 
-  className="countryCard"
-  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', padding: '16px' }}
->
+    <>
     <input type="text" onChange={handleChange} />
       {counters.map((counter , index) => (
-        <div  key={index} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', padding: '16px' }} >
+        <div 
+  key={index} 
+  className="countryCard"
+  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', padding: '16px' }}>
           <img src={counter.png} alt={`${counter.common} flag`}  />
           <p >{counter.common}</p>
         </div>
       ))}
-    </div>
+    </>
   )
 }
 
