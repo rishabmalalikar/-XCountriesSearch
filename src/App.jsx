@@ -30,7 +30,7 @@ const debouncedSearch = useMemo(() =>
     )
 
     setcounters(filtered)
-  }, 1500)
+  }, 300)
 , [allCountries])
 
 
@@ -39,8 +39,19 @@ const debouncedSearch = useMemo(() =>
   const handleChange = (e) => {
     debouncedSearch(e.target.value)
   }
+
+
+  useEffect(() => {
+  return () => {
+    debouncedSearch.cancel();
+  };
+}, [debouncedSearch]);
   return (
-    <>
+    <div 
+  key={index} 
+  className="countryCard"
+  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', padding: '16px' }}
+>
     <input type="text" onChange={handleChange} />
       {counters.map((counter , index) => (
         <div  key={index} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', padding: '16px' }} >
@@ -48,7 +59,7 @@ const debouncedSearch = useMemo(() =>
           <p >{counter.common}</p>
         </div>
       ))}
-    </>
+    </div>
   )
 }
 
